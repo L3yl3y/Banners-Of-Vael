@@ -2587,6 +2587,7 @@ var ENGINE = (function () {
     starLimit: starLimit,
     tokenAllowed: tokenAllowed,
     legalTokens: legalTokens,
+    usableTokenCount: usableTokenCount,
     areasWithUnits: areasWithUnits,
     unitStrength: unitStrength,
     moveTargets: moveTargets,

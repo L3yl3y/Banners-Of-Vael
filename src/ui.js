@@ -528,7 +528,7 @@ var UI = (function () {
     if (sel.selectedArea && sel.draft[sel.selectedArea] && E.ORDER_BY_ID[sel.draft[sel.selectedArea]].star) {
       replacing = 1;
     }
-    var html = '<p class="lede">Click one of your highlighted areas, then choose a token. ' + Object.keys(sel.draft).length + " of " + need.length + " placed. Special orders: " + stars + " of " + limit + ".</p>";
+    var html = '<p class="lede">Click one of your highlighted areas, then choose a token. ' + Object.keys(sel.draft).length + " of " + Math.min(need.length, E.usableTokenCount(state, h)) + " placed. Special orders: " + stars + " of " + limit + ".</p>";
     html += restrictionsHtml(state);
     if (sel.selectedArea) {
       html += '<p class="focus">Order for ' + areaLabel(sel.selectedArea) + unitsInline(state, sel.selectedArea) + "</p>";
@@ -552,7 +552,11 @@ var UI = (function () {
     });
     html += "</ul>";
     var row = '<div class="row">';
-    var complete = Object.keys(sel.draft).length >= need.length;
+    var required = Math.min(need.length, E.usableTokenCount(state, h));
+    var complete = Object.keys(sel.draft).length >= required;
+    if (required < need.length) {
+      html += '<p class="hint">You hold more areas than you have usable order tokens this round, so ' + (need.length - required) + " " + plural(need.length - required, "area goes", "areas go") + " without an order.</p>";
+    }
     if (complete) {
       row += btn("Seal Orders", "submitOrders", null, "primary");
     } else {

@@ -7,7 +7,11 @@ function check(label, condition, detail) {
     passed++;
   } else {
     failed++;
-    console.log("FAIL:", label, detail === undefined ? "" : JSON.stringify(detail));
+    let text = "";
+    if (detail !== undefined) {
+      text = JSON.stringify(detail);
+    }
+    console.log("FAIL:", label, text);
   }
 }
 
@@ -481,6 +485,33 @@ function act(s, house, action) {
     }
   }
   check("T The Turning Year is shuffled in, not pinned to the bottom", notLast > 20, notLast);
+})();
+
+
+// U. More areas than usable tokens: the engine accepts the maximum it can place.
+(function () {
+  const s = blank();
+  s.restrict = { noConsolidate: true };
+  s.tracks.court = ["calder", "vantar", "thorne"];
+  const areas = ["saltcrest", "tidegate", "stormwatch", "capesorrow", "goldmarch", "hollowmere", "ravenmoor", "cinderfell", "duskmarsh", "highspire", "teeth", "kestrelsound"];
+  areas.forEach(id => {
+    if (E.AREA[id].type === "sea") {
+      put(s, id, "calder", ["ship"]);
+    } else {
+      put(s, id, "calder", ["footman"]);
+    }
+  });
+  put(s, "oldford", "vantar", ["footman"]);
+  put(s, "fenwick", "thorne", ["footman"]);
+  check("U usable tokens is 11 under Lean Harvest at Court 1", E.usableTokenCount(s, "calder") === 11, E.usableTokenCount(s, "calder"));
+  startPhase(s, { t: "planning" });
+  const tokens = ["m-1", "m0", "m1", "d1a", "d1b", "d2", "s0a", "s0b", "ra", "rb", "s1"];
+  const orders = {};
+  areas.slice(0, 11).forEach((id, i) => {
+    orders[id] = tokens[i];
+  });
+  const r = act(s, "calder", { type: "orders", orders: orders });
+  check("U eleven orders for twelve areas accepted", r.ok, r);
 })();
 
 console.log("rule scenarios:", passed, "passed,", failed, "failed");
