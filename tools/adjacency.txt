@@ -1,0 +1,32 @@
+land  frostfell     ashgate, briarwood, frostmere, thornhold
+land  ashgate       cinderfell, frostfell, greyvale, thornhold
+land  cinderfell    ashgate, greyvale, hollowmere, ravenmoor
+land  ravenmoor     cinderfell, hollowmere, stormwatch, teeth
+land  thornhold     ashgate, briarwood, fenwick, frostfell, greyvale
+land  greyvale      ashgate, cinderfell, fenwick, highspire, hollowmere, oldford, thornhold
+land  hollowmere    cinderfell, duskmarsh, greyvale, highspire, ravenmoor, stormwatch
+land  stormwatch    duskmarsh, hollowmere, kestrelsound, ravenmoor, saltcrest, teeth
+land  briarwood     fenwick, frostfell, frostmere, greyreach, gullcliff, thornhold
+land  fenwick       briarwood, greyvale, gullcliff, oldford, redfield, thornhold
+land  highspire     duskmarsh, goldmarch, greyvale, hollowmere, oldford, stonebridge
+land  duskmarsh     goldmarch, highspire, hollowmere, saltcrest, stormwatch
+land  saltcrest     duskmarsh, goldmarch, kestrelsound, stormwatch, tidegate
+land  gullcliff     briarwood, fenwick, greyreach, redfield, vineholm
+land  oldford       fenwick, greyvale, highspire, redfield, stonebridge, sunhallow
+land  goldmarch     capesorrow, duskmarsh, highspire, kingswater, saltcrest, stonebridge, tidegate
+land  tidegate      capesorrow, goldmarch, kestrelsound, saltcrest, saltsound
+land  redfield      fenwick, gullcliff, oldford, sunhallow, vineholm
+land  stonebridge   amberford, goldmarch, highspire, kingswater, oldford, sunhallow
+land  vineholm      greyreach, gullcliff, redfield, sunhallow, sunlitsea, widowsbay
+land  sunhallow     amberford, oldford, redfield, stonebridge, sunlitsea, vineholm
+land  amberford     amberstrait, kingswater, stonebridge, sunhallow, sunlitsea
+land  capesorrow    amberstrait, goldmarch, kingswater, saltsound, tidegate
+sea   frostmere     briarwood, frostfell, greyreach
+sea   greyreach     briarwood, frostmere, gullcliff, vineholm, widowsbay
+sea   widowsbay     greyreach, sunlitsea, vineholm
+sea   sunlitsea     amberford, amberstrait, sunhallow, vineholm, widowsbay
+sea   kingswater    amberford, amberstrait, capesorrow, goldmarch, stonebridge
+sea   amberstrait   amberford, capesorrow, kingswater, saltsound, sunlitsea
+sea   saltsound     amberstrait, capesorrow, kestrelsound, tidegate
+sea   kestrelsound  saltcrest, saltsound, stormwatch, teeth, tidegate
+sea   teeth         kestrelsound, ravenmoor, stormwatch

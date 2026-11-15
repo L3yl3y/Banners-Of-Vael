@@ -1,0 +1,8 @@
+node_modules/
+dist/
+tools/shots/
+tools/*.png
+tools/*.log
+tools/preview.html
+tools/mapshot.html
+.DS_Store

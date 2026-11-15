@@ -1,0 +1,25 @@
+const puppeteer = require("puppeteer-core");
+const path = require("path");
+(async () => {
+  const browser = await puppeteer.launch({ executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", headless: true, args: ["--no-sandbox"] });
+  const page = await browser.newPage();
+  const errors = [];
+  page.on("pageerror", e => errors.push(e.message));
+  await page.setViewport({ width: 400, height: 860, deviceScaleFactor: 2 });
+  await page.goto("http://localhost:8765/", { waitUntil: "networkidle2" });
+  await new Promise(r => setTimeout(r, 600));
+  await page.screenshot({ path: path.join(__dirname, "shots", "m1-lobby.png") });
+  await page.click('[data-act="start"]');
+  await new Promise(r => setTimeout(r, 800));
+  await page.screenshot({ path: path.join(__dirname, "shots", "m2-game.png"), fullPage: false });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  await page.setViewport({ width: 1280, height: 860, deviceScaleFactor: 1 });
+  await page.click('.topbar [data-act="rules"]');
+  await new Promise(r => setTimeout(r, 300));
+  await page.screenshot({ path: path.join(__dirname, "shots", "r1-rules.png") });
+  await page.evaluate(() => document.getElementById("r-leaders").scrollIntoView());
+  await new Promise(r => setTimeout(r, 200));
+  await page.screenshot({ path: path.join(__dirname, "shots", "r2-leaders.png") });
+  console.log("horizontal overflow at 400px:", overflow, "errors:", errors);
+  await browser.close();
+})();

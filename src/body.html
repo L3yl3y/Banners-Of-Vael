@@ -1,0 +1,161 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="em-thorne" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="3.3" fill="#f6eedb"/><circle cx="16.2" cy="10.7" r="3.3" fill="#f6eedb"/><circle cx="14.6" cy="15.6" r="3.3" fill="#f6eedb"/><circle cx="9.4" cy="15.6" r="3.3" fill="#f6eedb"/><circle cx="7.8" cy="10.7" r="3.3" fill="#f6eedb"/><circle cx="12" cy="12" r="2.6" fill="#4d1f47"/></symbol>
+    <symbol id="em-calder" viewBox="0 0 24 24"><path d="M4 10c2.7-3 5.3-3 8 0s5.3 3 8 0M4 15.5c2.7-3 5.3-3 8 0s5.3 3 8 0" fill="none" stroke="#f6eedb" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="em-vantar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="#f6eedb"/><path d="M18.6 12h3M16.67 16.67l2.12 2.12M12 18.6v3M7.33 16.67l-2.12 2.12M5.4 12h-3M7.33 7.33L5.21 5.21M12 5.4v-3M16.67 7.33l2.12-2.12" stroke="#f6eedb" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div id="game" hidden>
+  <header class="topbar">
+    <h1 class="brand">Banners <span>Of</span> Vael</h1>
+    <div class="round-track" id="round-track" aria-label="Round"></div>
+    <div class="phase" id="phase"></div>
+    <div class="seat" id="seat"></div>
+    <div class="top-actions">
+      <button class="btn sm ghost" data-act="rules">How To Play</button>
+      <button class="btn sm ghost" data-act="menu" aria-haspopup="true">Menu</button>
+      <div class="menu" id="menu" hidden>
+        <button data-act="toggleLearning">Show Or Hide Learning Notes</button>
+        <button data-act="speed" data-speed="slow">Bot Speed: Slow</button>
+        <button data-act="speed" data-speed="normal">Bot Speed: Normal</button>
+        <button data-act="speed" data-speed="fast">Bot Speed: Fast</button>
+        <hr>
+        <button data-act="leave">Leave This Game</button>
+      </div>
+    </div>
+  </header>
+  <div class="netinfo" id="netinfo" hidden></div>
+  <main class="table">
+    <section class="board-wrap" aria-label="Board">
+      <div id="map"></div>
+      <div id="tooltip" hidden></div>
+    </section>
+    <aside class="side" aria-label="Dispatches">
+      <div class="panel prompt" id="prompt" aria-live="polite"></div>
+      <div class="panel" id="houses"></div>
+      <div class="panel" id="tracks"></div>
+      <div class="panel" id="events"></div>
+      <div class="panel" id="battle" hidden></div>
+      <div class="panel" id="log"></div>
+    </aside>
+  </main>
+</div>
+
+<div class="overlay lobby" id="lobby">
+  <div class="lobby-card">
+    <h1 class="lobby-title">Banners <span>Of</span> Vael</h1>
+    <p class="lobby-tag">Three great houses, ten rounds, seven castles to rule the realm.</p>
+    <div id="lobby-body"></div>
+  </div>
+</div>
+
+<div class="overlay curtain" id="curtain" hidden>
+  <div class="curtain-card">
+    <p id="curtain-text"></p>
+    <p class="muted small">The other player should look away while you plan.</p>
+    <button class="btn primary big" id="curtain-btn">Show My Turn</button>
+  </div>
+</div>
+
+<div class="confirm" id="confirm-leave" hidden>
+  <div class="confirm-card">
+    <p>Leave this game? It will be deleted from this device and cannot be resumed.</p>
+    <div class="row"><button class="btn primary" data-act="leaveYes">Leave Game</button><button class="btn ghost" data-act="leaveNo">Keep Playing</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="rules" hidden>
+  <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+    <button class="btn sm ghost modal-close" id="rules-close">Close</button>
+    <h2 id="rules-title">How To Play</h2>
+    <nav class="rules-toc">
+      <a href="#r-goal">The Goal</a><a href="#r-round">A Round</a><a href="#r-orders">Orders</a><a href="#r-battle">Battles</a><a href="#r-units">Units</a><a href="#r-supply">Supply</a><a href="#r-power">Power And Control</a><a href="#r-tracks">Influence Tracks</a><a href="#r-events">Event Cards</a><a href="#r-horde">The Horde</a><a href="#r-leaders">Leaders</a><a href="#r-online">Playing Online</a>
+    </nav>
+
+    <h3 id="r-goal">The Goal</h3>
+    <p>Each house begins with its home stronghold and one castle. The map holds 16 castles and strongholds. The moment a house controls 7 of them, it wins. If nobody reaches 7, the game ends after round 10 and the house with the most castles and strongholds wins; ties go to the house with more strongholds, then the higher supply, then the most available power, then the better place on the Crown track.</p>
+    <p>Grey hexagons are neutral forces. To take one of those areas you must march in with strength equal to or higher than the number shown (your units, your March bonus and your own adjacent Support orders). No leaders are played against neutral forces.</p>
+
+    <h3 id="r-round">A Round</h3>
+    <ol>
+      <li><b>Event Phase</b> (from round 2). One card is drawn from each of the three event decks and resolved in order I, II, III. Cards marked with the horde symbol raise the horde threat by 2.</li>
+      <li><b>Planning Phase</b>. Every house secretly places one order in every area that holds its units. All orders are revealed at once. The holder of the Messenger Hawk may then swap one of their orders or look at the next horde card.</li>
+      <li><b>Action Phase</b>. Orders resolve in three steps: all Raids, then all Marches, then all Consolidate Power orders. Within a step, houses take turns in Crown track order, resolving one order each time, until none of that kind remain. Defence and Support orders stay on the board and work during battles.</li>
+    </ol>
+
+    <h3 id="r-orders">Orders</h3>
+    <p>Each house owns the same 15 order tokens. Five of them are starred special orders; your place on the Court track decides how many starred orders you may use each round (3, 3 or 2).</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Order</th><th>Tokens</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>March</td><td>−1, +0, +1★</td><td>Move units into adjacent areas. The number is added to your strength if the march starts a battle. Only one move per march may start a battle.</td></tr>
+        <tr><td>Defence</td><td>+1, +1, +2★</td><td>Added to your strength if this area is attacked.</td></tr>
+        <tr><td>Support</td><td>+0, +0, +1★</td><td>Lends the strength of these units, plus the bonus, to one side of a battle in an adjacent area.</td></tr>
+        <tr><td>Raid</td><td>Raid, Raid, Raid★</td><td>Removes an adjacent enemy Support, Raid or Consolidate Power order. The starred raid can also remove a Defence order. Raiding Consolidate Power moves 1 power from them to you.</td></tr>
+        <tr><td>Consolidate Power</td><td>three, one ★</td><td>Gain 1 power plus 1 for each crown in the area. The starred order in a castle or stronghold may muster there instead.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Land units can sail: a march from a land area may reach any land area along a chain of sea areas that all hold your ships. Ships move only between adjacent seas. If every unit leaves a land area, you may spend 1 power to leave a power token there and keep control of it.</p>
+
+    <h3 id="r-battle">Battles</h3>
+    <p>A battle starts when a march enters an area holding enemy units (or an enemy home with its garrison).</p>
+    <ol>
+      <li><b>Support</b>. Every house with a Support order next to the battle chooses a side or stays out. Combatants always support themselves.</li>
+      <li><b>Strength</b>. Each side adds its units, the attacker's March bonus, the defender's Defence order, the defender's home garrison (+2) and all support.</li>
+      <li><b>Leaders</b>. Both sides secretly choose a leader card. Its strength is added and its text applies.</li>
+      <li><b>The Starsteel Blade</b>. If its holder is fighting and has not used it this round, they may add +1.</li>
+      <li><b>Result</b>. The higher total wins. A tie goes to the house higher on the Sword track. The loser loses one unit for each sword on the winner's leader, reduced by each tower on the loser's leader.</li>
+      <li><b>Retreat</b>. A losing attacker returns to the area it marched from. A losing defender retreats to an adjacent area that is empty or its own, never into the area the attacker came from. Retreating units are routed: they cannot march, support or add strength until the round ends, and if they lose again they are destroyed. Siege Engines that must retreat are destroyed. If the retreat would break the loser's supply limit, retreating units are destroyed (weakest first) until it fits.</li>
+    </ol>
+    <p>A leader card, once played, stays discarded until you have played your last one; then the other six return to your hand.</p>
+
+    <h3 id="r-units">Units</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Unit</th><th>Strength</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Footman</td><td>1</td><td>10 per house.</td></tr>
+        <tr><td>Knight</td><td>2</td><td>5 per house.</td></tr>
+        <tr><td>Ship</td><td>1</td><td>6 per house. Sea only. Can support or raid adjacent land, and carries armies across the sea.</td></tr>
+        <tr><td>Siege Engine</td><td>4 or 0</td><td>2 per house. Strength 4 only when attacking (or supporting an attack on) a castle or stronghold; 0 otherwise.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 id="r-supply">Supply And Armies</h3>
+    <p>An army is two or more of your units in one area. Your supply level, set by the barrels in the areas you control (up to 6), limits how many armies you may have and how large they may be. You can never march, muster or retreat into a position that breaks the limit. When a Harvest Count lowers your supply, you must remove units until you fit.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Supply</th><th>Armies Allowed</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>2, 2</td></tr><tr><td>1</td><td>3, 2</td></tr><tr><td>2</td><td>3, 2, 2</td></tr><tr><td>3</td><td>3, 2, 2, 2</td></tr><tr><td>4</td><td>3, 3, 2, 2</td></tr><tr><td>5</td><td>4, 3, 2, 2</td></tr><tr><td>6</td><td>4, 3, 2, 2, 2</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 id="r-power">Power And Control</h3>
+    <p>You control an area while your units are in it, or while your power token sits there. Your home stronghold stays yours even when empty, until an enemy takes it. Power is spent on bids for the influence tracks, on bids against the horde, and on tokens that hold empty areas. Each house owns 20 power tokens in total.</p>
+    <p>Mustering (from the Call To Arms event or a starred Consolidate Power order): each castle gives 1 point and each stronghold 2, spent in that area. A Footman costs 1, a Knight 2, a Ship 1 (placed in an adjacent sea free of enemy ships), a Siege Engine 2, and upgrading a Footman to a Knight or Siege Engine costs 1.</p>
+
+    <h3 id="r-tracks">Influence Tracks</h3>
+    <ul>
+      <li><b>Crown</b>: turn order for raids and marches, and its leader holds the Ember Crown, which settles every tied bid.</li>
+      <li><b>Sword</b>: higher position wins tied battles, and its leader holds the Starsteel Blade (+1 once per round).</li>
+      <li><b>Court</b>: positions allow 3, 3 and 2 starred orders, and its leader holds the Messenger Hawk.</li>
+    </ul>
+    <p>The tracks change only through a Contest Of Influence: every house bids power in secret for each track in turn, and all bids are spent.</p>
+
+    <h3 id="r-events">Event Cards</h3>
+    <p><b>Deck I</b>: Harvest Count (recount supply), Call To Arms (everyone musters), The Crown's Decree (the Crown holder picks one of those or nothing), A Quiet Season, The Turning Year (shuffle the whole deck, this card included, and draw again).</p>
+    <p><b>Deck II</b>: Contest Of Influence (bid for the tracks), Tribute (gain power for every crown you control), Whispers At Court (the Hawk holder picks one of those or nothing), A Quiet Season, The Turning Year.</p>
+    <p><b>Deck III</b>: The Horde Assaults (the horde attacks now), Storm Season (no Raids), Mud Season (no March +1), Lean Harvest (no Consolidate Power), Broken Oaths (no Support), Reckless Fury (no Defence), The Blade's Choice (the Blade holder picks no Defence, no March +1 or no restriction).</p>
+
+    <h3 id="r-horde">The Horde</h3>
+    <p>Beyond the Ember Gate the horde gathers. Its threat runs from 0 to 12 and rises by 2 for every horde symbol on the event cards. It attacks when The Horde Assaults is drawn, or at once if the threat reaches 12. Every house bids power in secret and the bids are added together. If the total equals or beats the threat, the gate holds, the threat drops to 0 and the highest bidder gains the reward on the horde card. If not, the threat drops by 4, the lowest bidder suffers the card's harshest effect and everyone else a lesser one. All bid power is spent.</p>
+    <div id="horde-ref"></div>
+
+    <h3 id="r-leaders">Leaders</h3>
+    <p>Each house has seven leaders with strengths 4, 3, 2, 2, 1, 1 and 0. <svg class="ic sword inline" viewBox="0 0 16 16" aria-label="Sword"><path d="M13.5 1.5L7 8l1 1 6.5-6.5zM5.2 8.6l2.2 2.2-1 1-.9-.4-2.3 2.3-.9-.9 2.3-2.3-.4-.9z" fill="currentColor"/></svg> is a sword (kills a unit if you win) and <svg class="ic fort inline" viewBox="0 0 16 16" aria-label="Tower"><path d="M3 15V5h2V2h2v3h2V2h2v3h2v10z" fill="currentColor"/><path d="M7 15v-3a1 1 0 0 1 2 0v3z" fill="#efe3c4"/></svg> is a tower (blocks one of the winner's swords).</p>
+    <div id="leader-ref"></div>
+
+    <h3 id="r-online">Playing Online</h3>
+    <p>On the GitHub Pages version, choose "Friend online" for a seat and start the game; you receive a four-letter room code. Your friend opens the same page, chooses Join and types the code. On the claude.ai page, share the page with your friend as an Editor (invite them by email, without a public link); they open it, choose Join and pick your game. In both cases the host's page runs the game and the bots, so keep it open until you finish. Your game is saved in your browser and can be resumed from the start screen.</p>
+  </article>
+</div>

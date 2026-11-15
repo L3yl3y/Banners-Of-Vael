@@ -1,0 +1,17 @@
+const fs = require("fs");
+const path = require("path");
+const root = path.join(__dirname, "..");
+const read = f => fs.readFileSync(path.join(root, "src", f), "utf8");
+const scripts = ["mapdata.js", "rules.js", "engine.js", "bot.js", "ui-map.js", "ui.js", "net.js", "app.js"].map(read).join("\n");
+const css = read("style.css");
+const body = read("body.html");
+const fonts = '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">';
+const title = "<title>Banners Of Vael</title>";
+const icon = '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath d=%27M5 3h14v9c0 5-3.5 8-7 9.5C8.5 20 5 17 5 12z%27 fill=%27%23e0864a%27/%3E%3C/svg%3E">';
+const artifact = title + '\n<meta name="claude:viewport-fit-sides" content="cover">\n' + fonts + "\n<style>\n" + css + "</style>\n" + body + "\n<script>\n" + scripts + "</script>\n";
+fs.mkdirSync(path.join(root, "dist"), { recursive: true });
+fs.writeFileSync(path.join(root, "dist", "artifact.html"), artifact);
+const page = '<!doctype html>\n<html lang="en-GB">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<meta name="description" content="Banners Of Vael: a strategy game of orders, battles and influence for three houses. Play against bots or a friend online.">\n' + title + "\n" + icon + "\n" + fonts + "\n<style>\n:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }\nbody { margin: 0; }\n[hidden] { display: none !important; }\nimg { max-width: 100%; }\n" + css + "</style>\n</head>\n<body>\n" + body + '\n<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>\n<script>\n' + scripts + "</script>\n</body>\n</html>\n";
+fs.mkdirSync(path.join(root, "docs"), { recursive: true });
+fs.writeFileSync(path.join(root, "docs", "index.html"), page);
+console.log("artifact", artifact.length, "bytes; pages", page.length, "bytes");
